@@ -3,6 +3,10 @@ networks:
     external: false
   jenkinsnet:
     external: false
+  gitjenkinsnet:
+    external: false
+  nginxnet:
+    external: false
 
 services:
   nginx:
@@ -22,8 +26,7 @@ services:
         max-size: "3m"
     restart: always
     networks:
-      - giteanet
-      - jenkinsnet
+      - nginxnet
     ports:
       - 80:80
       - 222:222
@@ -97,11 +100,13 @@ services:
       - giteadb
     networks:
       - giteanet
+      - gitjenkinsnet
+      - nginxnet
     links:
       - "giteadb"
     volumes:
       - ./data/gitea-data:/data/
-      # - ./docker/gitea/app.ini:/data/gitea/conf/app.ini
+      - ./docker/gitea/app.ini:/data/gitea/conf/app.ini
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
@@ -124,11 +129,13 @@ services:
 
   jenkins:
     container_name: jenkins
-    build: ./docker/jenkins/Dockerfile
+    build: ./docker/jenkins
     depends_on:
       - docker
     networks: 
       - jenkinsnet
+      - gitjenkinsnet
+      - nginxnet
     environment:
       DOCKER_HOST: "tcp://docker:2376"
       DOCKER_CERT_PATH: /certs/client
