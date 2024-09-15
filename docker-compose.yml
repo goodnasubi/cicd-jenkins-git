@@ -149,3 +149,11 @@ services:
     volumes:
       - ./data/jenkins-docker-certs:/certs/client:ro
       - ./data/jenkins-data:/var/jenkins_home
+    entrypoint:
+      # - sh
+      # - -c
+      # - 'git config --global --add safe.directory "*"'
+      # - --
+      - /bin/tini
+      - --
+      - /usr/local/bin/jenkins.sh
