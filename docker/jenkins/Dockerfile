@@ -12,7 +12,9 @@ RUN apt-get update && apt-get install -y docker-ce-cli iputils-ping net-tools
 # RUN git -v && git config --global --add safe.directory "*"
 
 USER jenkins
-RUN jenkins-plugin-cli --plugins "blueocean docker-workflow"
+# RUN jenkins-plugin-cli --plugins "blueocean docker-workflow"
+COPY plugins.txt /usr/share/jenkins/plugins.txt
+RUN jenkins-plugin-cli -f /usr/share/jenkins/plugins.txt
 
 # COPY executors.groovy /usr/share/jenkins/ref/init.groovy.d/executors.groovy
 # COPY plugins.txt /usr/share/jenkins/plugins.txt
