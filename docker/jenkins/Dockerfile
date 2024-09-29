@@ -11,6 +11,8 @@ RUN echo "deb [arch=$(dpkg --print-architecture) \
 RUN apt-get update && apt-get install -y docker-ce-cli iputils-ping net-tools
 # RUN git -v && git config --global --add safe.directory "*"
 
+COPY init_jenkins.sh /tmp/init_jenkins.sh
+
 USER jenkins
 # RUN jenkins-plugin-cli --plugins "blueocean docker-workflow"
 COPY plugins.txt /usr/share/jenkins/plugins.txt
